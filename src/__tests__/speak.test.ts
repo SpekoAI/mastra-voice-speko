@@ -23,7 +23,7 @@ describe('constructor', () => {
   it('throws the exact key-missing message when no apiKey and no SPEKO_API_KEY', () => {
     vi.stubEnv('SPEKO_API_KEY', '');
     expect(() => new SpekoVoice()).toThrowError(
-      'SPEKO_API_KEY must be set (or pass apiKey / speechModel.apiKey / listeningModel.apiKey). Create one at https://platform.speko.dev/api-keys',
+      'SPEKO_API_KEY must be set (or pass apiKey / speechModel.apiKey / listeningModel.apiKey). Create one at https://platform.speko.ai/agents/keys',
     );
   });
 

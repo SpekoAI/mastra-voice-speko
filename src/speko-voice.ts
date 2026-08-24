@@ -49,7 +49,7 @@ export class SpekoVoice extends MastraVoice<
       process.env.SPEKO_API_KEY;
     if (!apiKey) {
       throw new Error(
-        'SPEKO_API_KEY must be set (or pass apiKey / speechModel.apiKey / listeningModel.apiKey). Create one at https://platform.speko.dev/api-keys',
+        'SPEKO_API_KEY must be set (or pass apiKey / speechModel.apiKey / listeningModel.apiKey). Create one at https://platform.speko.ai/agents/keys',
       );
     }
     super({
@@ -112,6 +112,7 @@ export class SpekoVoice extends MastraVoice<
       `${this.baseUrl}/v1/synthesize`,
       body,
       this.authHeaders(options?.sessionId),
+      options?.abortSignal,
     );
 
     this.logger.debug('speko synthesize routed', {
@@ -178,7 +179,13 @@ export class SpekoVoice extends MastraVoice<
       }),
     };
 
-    const res = await postBytes(this.fetchImpl, `${this.baseUrl}/v1/transcribe`, audio, headers);
+    const res = await postBytes(
+      this.fetchImpl,
+      `${this.baseUrl}/v1/transcribe`,
+      audio,
+      headers,
+      options?.abortSignal,
+    );
 
     if (!res.body) {
       throw new SpekoVoiceError('Speko transcribe response had no body', { status: res.status });
