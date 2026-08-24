@@ -11,9 +11,14 @@
     "./package.json": "./package.json",
     ".": {
       "@spekoai/source": "./src/index.ts",
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
   "files": [
@@ -32,7 +37,7 @@
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
-    "@mastra/core": ">=1.29.0 <2.0.0"
+    "@mastra/core": ">=1.29.0-0 <2.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",
