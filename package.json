@@ -1,0 +1,74 @@
+{
+  "name": "@spekoai/mastra-voice",
+  "version": "0.1.0",
+  "description": "Speko voice provider for Mastra — multi-vendor STT/TTS gateway (Deepgram, ElevenLabs, Cartesia, OpenAI, and more) through one Speko API key.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@spekoai/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "biome ci ."
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "peerDependencies": {
+    "@mastra/core": ">=1.0.0 <2.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.0",
+    "@mastra/core": "^1.62.0-alpha.5",
+    "@types/node": "^25.0.0",
+    "tsup": "^8.3.0",
+    "typescript": "~6.0.3",
+    "vitest": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "license": "MIT",
+  "author": "Speko",
+  "homepage": "https://github.com/SpekoAI/mastra-voice-speko#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SpekoAI/mastra-voice-speko.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SpekoAI/mastra-voice-speko/issues"
+  },
+  "keywords": [
+    "speko",
+    "spekoai",
+    "mastra",
+    "mastra-voice",
+    "voice-ai",
+    "stt",
+    "tts",
+    "speech-to-text",
+    "text-to-speech"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "provenance": true
+  }
+}
