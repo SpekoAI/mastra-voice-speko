@@ -59,6 +59,7 @@ describe('speak', () => {
     expect(req.url).toBe('https://api.speko.dev/v1/synthesize');
     expect(req.method).toBe('POST');
     expect(req.headers.authorization).toBe(`Bearer ${KEY}`);
+    expect(req.headers['user-agent']).toBe('@spekoai/mastra-voice/0.1.1');
     const body = req.json() as Record<string, unknown>;
     expect(body.text).toBe('Hello world');
     expect(body.intent).toEqual({ language: 'en' });
