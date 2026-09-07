@@ -24,6 +24,7 @@ describe('getSpeakers', () => {
     expect(req.url).toBe('https://api.speko.dev/v1/voices');
     expect(req.method).toBe('GET');
     expect(req.headers.authorization).toBe(`Bearer ${KEY}`);
+    expect(req.headers['user-agent']).toBe('@spekoai/mastra-voice/0.1.1');
   });
 
   it('rejects with SpekoVoiceError on HTTP failure', async () => {

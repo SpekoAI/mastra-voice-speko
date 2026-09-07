@@ -42,6 +42,7 @@ describe('listen', () => {
     expect(req.url).toBe('https://api.speko.dev/v1/transcribe');
     expect(req.method).toBe('POST');
     expect(req.headers.authorization).toBe(`Bearer ${KEY}`);
+    expect(req.headers['user-agent']).toBe('@spekoai/mastra-voice/0.1.1');
     expect(req.headers['content-type']).toBe('audio/wav');
     expect(JSON.parse(req.headers['x-speko-intent']!)).toEqual({ language: 'en' });
     expect(req.headers['x-speko-constraints']).toBeUndefined();

@@ -1,5 +1,10 @@
 # @spekoai/mastra-voice
 
+## 0.1.1
+
+- Add the package name and version to Speko HTTP request headers.
+- Check the emitted package version before publication.
+
 ## 0.1.0
 
 Initial release.

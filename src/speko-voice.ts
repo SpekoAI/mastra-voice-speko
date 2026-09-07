@@ -69,6 +69,7 @@ export class SpekoVoice extends MastraVoice<
   private authHeaders(sessionId?: string): Record<string, string> {
     return {
       Authorization: `Bearer ${this.apiKey}`,
+      'User-Agent': '@spekoai/mastra-voice/0.1.1',
       ...(sessionId ? { 'x-session-id': sessionId } : {}),
     };
   }

@@ -1,6 +1,6 @@
 {
   "name": "@spekoai/mastra-voice",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Speko voice provider for Mastra — multi-vendor STT/TTS gateway (Deepgram, ElevenLabs, Cartesia, OpenAI, and more) through one Speko API key.",
   "type": "module",
   "sideEffects": false,
@@ -26,7 +26,9 @@
     "build": "tsup",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "lint": "biome ci ."
+    "lint": "biome ci .",
+    "check:package": "node scripts/check-package-version.mjs",
+    "prepublishOnly": "npm run build && npm run check:package"
   },
   "dependencies": {
     "tslib": "^2.3.0"
