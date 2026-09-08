@@ -1,21 +1,43 @@
 import { PassThrough } from 'node:stream';
 
-/** Web ReadableStream<Uint8Array> → Node stream. Deepgram-provider pattern, verbatim behavior. */
+/**
+ * Web ReadableStream<Uint8Array> → Node stream, with backpressure and teardown:
+ * a full PassThrough pauses reads until 'drain', and destroying the returned
+ * stream cancels the web reader so the underlying fetch body stops downloading.
+ */
 export function webToNodeStream(webStream: ReadableStream<Uint8Array>): PassThrough {
   const nodeStream = new PassThrough();
   const reader = webStream.getReader();
+  let closed = false;
+  const cancelReader = () => {
+    closed = true;
+    reader.cancel().catch(() => {});
+  };
+  nodeStream.once('close', cancelReader);
+  nodeStream.once('error', cancelReader);
   (async () => {
     try {
       for (;;) {
         const { done, value } = await reader.read();
-        if (done) {
-          nodeStream.end();
+        if (done || closed) {
+          if (!closed) nodeStream.end();
           break;
         }
-        nodeStream.write(Buffer.from(value));
+        if (!nodeStream.write(Buffer.from(value))) {
+          await new Promise<void>((resolve) => {
+            const onDone = () => {
+              nodeStream.off('drain', onDone);
+              nodeStream.off('close', onDone);
+              resolve();
+            };
+            nodeStream.once('drain', onDone);
+            nodeStream.once('close', onDone);
+          });
+          if (closed) break;
+        }
       }
     } catch (err) {
-      nodeStream.destroy(err instanceof Error ? err : new Error(String(err)));
+      if (!closed) nodeStream.destroy(err instanceof Error ? err : new Error(String(err)));
     }
   })();
   return nodeStream;

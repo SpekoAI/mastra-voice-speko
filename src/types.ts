@@ -32,7 +32,7 @@ export interface SpekoListeningModelConfig {
 }
 
 export interface SpekoVoiceConfig {
-  /** Speko API key. Fallback: process.env.SPEKO_API_KEY. Get one at platform.speko.dev/api-keys. */
+  /** Speko API key. Fallback: process.env.SPEKO_API_KEY. Get one at platform.speko.ai/agents/keys. */
   apiKey?: string;
   /** Default 'https://api.speko.dev'. */
   baseUrl?: string;
@@ -55,7 +55,14 @@ export interface SpekoSpeakOptions {
   speed?: number; // 0.5–2
   instructions?: string; // ≤2000 chars style prompt; dropped by non-instruction models
   spokenForm?: boolean; // deterministic number/URL normalization
+  /**
+   * Pinned output sample rate. Production currently serves 24000 Hz for every
+   * TTS provider; other rates fail with NO_PROVIDER_AVAILABLE (422) unless
+   * rate-specific providers are enabled for your org.
+   */
   sampleRate?: 16000 | 24000 | 44100 | 48000;
+  /** Cancels the in-flight synthesize request (fetch abort). */
+  abortSignal?: AbortSignal;
   /**
    * 'wav' (default): buffer full response, return a PassThrough containing one playable WAV.
    * 'pcm': stream raw s16le chunks as they arrive (lowest latency); sample rate is
@@ -81,6 +88,8 @@ export interface SpekoListenOptions {
   fillerWords?: boolean;
   profanityFilter?: boolean;
   sessionId?: string;
+  /** Cancels the in-flight transcribe request (fetch abort). */
+  abortSignal?: AbortSignal;
 }
 
 /** getSpeakers() row metadata (TSpeakerMetadata). */

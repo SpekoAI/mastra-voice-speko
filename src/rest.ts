@@ -8,11 +8,13 @@ export async function postJson(
   url: string,
   body: unknown,
   headers: Record<string, string>,
+  signal?: AbortSignal,
 ): Promise<Response> {
   const res = await fetchImpl(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...headers },
     body: JSON.stringify(body),
+    signal,
   });
   if (!res.ok) throw await SpekoVoiceError.fromResponse(res);
   return res;
@@ -24,8 +26,9 @@ export async function postBytes(
   url: string,
   body: Uint8Array,
   headers: Record<string, string>,
+  signal?: AbortSignal,
 ): Promise<Response> {
-  const res = await fetchImpl(url, { method: 'POST', headers, body: body as BodyInit });
+  const res = await fetchImpl(url, { method: 'POST', headers, body: body as BodyInit, signal });
   if (!res.ok) throw await SpekoVoiceError.fromResponse(res);
   return res;
 }
@@ -35,8 +38,9 @@ export async function getJson<T>(
   fetchImpl: FetchImpl,
   url: string,
   headers: Record<string, string>,
+  signal?: AbortSignal,
 ): Promise<T> {
-  const res = await fetchImpl(url, { method: 'GET', headers });
+  const res = await fetchImpl(url, { method: 'GET', headers, signal });
   if (!res.ok) throw await SpekoVoiceError.fromResponse(res);
   return (await res.json()) as T;
 }
@@ -75,6 +79,9 @@ export async function* parseSseStream(body: ReadableStream<Uint8Array>): AsyncGe
       if (event) yield event;
     }
   } finally {
+    // Early exit (listen() returns on the 'done' event) must not strand the
+    // socket: cancel drains/aborts the body so the connection can be reused.
+    await reader.cancel().catch(() => {});
     reader.releaseLock();
   }
 }
