@@ -22,8 +22,15 @@ export class SpekoVoiceError extends Error {
     } catch {
       // non-JSON body; keep the text snippet (if any)
     }
-    const serverError = typeof parsed?.error === 'string' ? parsed.error : undefined;
-    const message = `Speko API error ${res.status}: ${serverError ?? res.statusText ?? textSnippet ?? 'request failed'}`;
+    const serverError =
+      typeof parsed?.error === 'string'
+        ? parsed.error
+        : typeof (parsed as { message?: unknown } | undefined)?.message === 'string'
+          ? (parsed as { message: string }).message
+          : undefined;
+    // statusText is always a string ('' over HTTP/2), so pick the first NON-EMPTY source.
+    const reason = serverError || res.statusText || textSnippet || 'request failed';
+    const message = `Speko API error ${res.status}: ${reason}`;
     return new SpekoVoiceError(message, {
       status: res.status,
       code: typeof parsed?.code === 'string' ? parsed.code : undefined,

@@ -14,7 +14,7 @@ npm i @spekoai/mastra-voice @mastra/core
 ## Setup
 
 Set `SPEKO_API_KEY` in your environment (create one at
-[platform.speko.dev/api-keys](https://platform.speko.dev/api-keys)), or pass
+[platform.speko.ai/agents/keys](https://platform.speko.ai/agents/keys)), or pass
 `apiKey` in the constructor.
 
 ## Usage
@@ -101,9 +101,10 @@ Override per constructor (`language`), per model config
 | `speed` | `number` | — | 0.5–2 |
 | `instructions` | `string` | — | ≤2000 chars style prompt; dropped by non-instruction models |
 | `spokenForm` | `boolean` | — | deterministic number/URL normalization |
-| `sampleRate` | `16000 \| 24000 \| 44100 \| 48000` | `24000` | pins output rate, locks failover to rate-compatible providers |
+| `sampleRate` | `16000 \| 24000 \| 44100 \| 48000` | `24000` | pins output rate, locks failover to rate-compatible providers; production currently serves 24000 only, other rates 422 until rate-specific providers are enabled |
 | `format` | `'wav' \| 'pcm'` | `'wav'` | see Audio formats |
 | `sessionId` | `string` | — | usage attribution (`x-session-id`) |
+| `abortSignal` | `AbortSignal` | — | cancels the in-flight request |
 
 ### `SpekoListenOptions`
 
@@ -120,6 +121,7 @@ Override per constructor (`language`), per model config
 | `fillerWords` | `boolean` | — | |
 | `profanityFilter` | `boolean` | — | |
 | `sessionId` | `string` | — | usage attribution (`x-session-id`) |
+| `abortSignal` | `AbortSignal` | — | cancels the in-flight request |
 
 ## With CompositeVoice
 
