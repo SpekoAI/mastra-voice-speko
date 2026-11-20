@@ -1,6 +1,6 @@
 # @spekoai/mastra-voice
 
-[Speko](https://speko.ai) voice provider for [Mastra](https://mastra.ai) — multi-vendor
+[Speko](https://speko.com) voice provider for [Mastra](https://mastra.ai) — multi-vendor
 STT/TTS through one API key. Speko routes each request to the best provider for your
 language/latency/cost intent, with automatic failover across Deepgram, ElevenLabs,
 Cartesia, OpenAI, and more.
